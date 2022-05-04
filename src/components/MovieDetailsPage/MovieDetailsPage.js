@@ -1,4 +1,4 @@
-import { useParams } from "react-router"
+import { Outlet, useParams } from "react-router"
 import { Link} from "react-router-dom";
 
 const MovieDetailsPage=({trend})=>{
@@ -21,8 +21,8 @@ const MovieDetailsPage=({trend})=>{
         <div>
         <h2>Additional information</h2>
         
-            {/* <Link to="/movies/:movieId/cast">Cast</Link>
-            <Link to="/movies/:movieId/reviews">Reviews</Link> */}
+            <Link to={`/movies/${movie.id}/cast`}>Cast</Link>
+            <Link to={`/movies/${movie.id}/reviews`}>Reviews</Link>
         </div>
         
         
