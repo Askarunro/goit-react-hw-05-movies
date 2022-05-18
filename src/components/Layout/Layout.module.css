@@ -1,0 +1,27 @@
+.navigate{
+    margin-left: 20px;
+    display: flex;
+    grid-column-gap: 20px;
+}
+
+.wrapper{
+    margin: 0 0 20px 10px;
+    display: flex;
+    grid-column-gap: 10px;
+    align-items: center;
+}
+
+.link{
+    padding: 10px ;
+    color: #000;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    transition: all .3s;
+}
+.link:hover,.link:focus{
+    text-decoration: underline;
+}
+.link[aria-current]{
+    color: coral;
+}
