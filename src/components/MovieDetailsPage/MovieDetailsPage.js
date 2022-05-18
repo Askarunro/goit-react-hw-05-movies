@@ -1,56 +1,71 @@
-import { Outlet, useParams } from "react-router";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router";
+import { NavLink, Outlet } from "react-router-dom";
 import * as API from "..//..//services/movies-api";
 import { useEffect, useState } from "react";
+import d from "./MovieDetailsPage.module.css";
 
 const MovieDetailsPage = () => {
-  const { cast } = useParams();
-  const [trend, setTrend] = useState([]);
-  const [genres, setGenres] =useState([])
+  const { movieId } = useParams();
+
+  const [genres, setGenres] = useState([]);
+  const [movie, setMovies] = useState([]);
+  const [movieGenres, setMovieGenres] = useState([]);
+  const a = [];
 
   useEffect(() => {
-    API.fetchData().then(setTrend);
+    API.fetchDataMovie(movieId).then(setMovies);
     API.fetchDataGenres().then(setGenres);
   }, []);
 
-  useEffect(()=>{
-    // console.log(trend)
-    // console.log(genres)
-
-const genreName = genres.forEach(genre=>{
-    console.log(genre)
-
-    const a = movie.genre_ids.find(genreId=>genreId===genre.id)
-    console.log(a)
-  
-    console.log(genre.id)
-  })
-  
-  },[genres])
-  const movie = trend.find((movie) => movie.id === Number(cast));
+  useEffect(() => {
+    const genreName = genres.forEach((genre) => {
+      movie.genres.find((genreId) => {
+        if (genreId.id === genre.id) {
+          a.push(genre.name);
+        }
+      });
+    });
+    setMovieGenres(a);
+  }, [movie]);
 
   return (
     <>
       {!movie && <h2>Loading</h2>}
       {movie && (
         <>
-          <div className="">
-            <img src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`} />
-            <div>
-              <h1>{movie.original_title}</h1>
-              <p>User Score:{movie.vote_average}</p>
+          <div className={d.wrapper}>
+            <img
+              src={movie.title && `https://image.tmdb.org/t/p/w200/${movie.poster_path || movie.backdrop_path}`}
+            />
+            <div className={d.inner}>
+              <h1>{movie.title ? movie.title : movie.name}</h1>
+              <p>User Score: {movie.vote_average}</p>
               <h2>Overview</h2>
               <p>{movie.overview}</p>
-              <h3>Genres</h3>
-              {/* <p>{movie.genre_ids}</p> */}
+              <h2>Genres</h2>
+              <p>
+                {movieGenres.map((item) => (
+                  <span key={item}>
+                    {item} {"\u00A0"}
+                  </span>
+                ))}
+              </p>
             </div>
           </div>
+          <hr />
           <div>
             <h2>Additional information</h2>
-
-            <Link to={`/movies/${movie.id}/cast`}>Cast</Link>
-            <Link to={`/movies/${movie.id}/reviews`}>Reviews</Link>
+            <ul>
+              <li>
+                <NavLink to={`/movies/${movie.id}/cast`}>Cast</NavLink>
+              </li>
+              <li>
+                <NavLink to={`/movies/${movie.id}/reviews`}>Reviews</NavLink>
+              </li>
+            </ul>
           </div>
+          <hr />
+          <Outlet />
         </>
       )}
     </>
