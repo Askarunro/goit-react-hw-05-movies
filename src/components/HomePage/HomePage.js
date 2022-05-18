@@ -12,7 +12,6 @@ const HomePage = () => {
       <h1>Trending today</h1>
       <ul>
         {trend.map((item) => (
-          // <li key={item.id} data-id={item.id} onClick={handleClick}>
           <li key={item.id} data-id={item.id}>
             <Link to={`/movies/${item.id}/`}>{item.title ? item.title : item.name}</Link>
           </li>
