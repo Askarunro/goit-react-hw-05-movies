@@ -14,7 +14,7 @@ const Reviews = () => {
 
   return (
     <>
-    {!reviews[1] && <h2>We don`t have any reviews for hies movie</h2>}
+    {!reviews[1] && <h2>We don`t have any reviews from this movie</h2>}
     {reviews[1] && <ul className={r.list}>
       {reviews.map((review) => (
         <li key={review.id} className={r.item}>
