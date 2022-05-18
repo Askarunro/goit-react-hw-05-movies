@@ -1,0 +1,10 @@
+.wrapper{
+    display: flex;
+    grid-column-gap: 20px;
+}
+
+.inner{
+    display: flex;
+    flex-direction: column;
+    grid-row-gap: 10px;
+}
