@@ -1,30 +1,40 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useSearchParams} from "react-router-dom";
 import * as API from "..//..//services/movies-api";
-import { useEffect, useState } from "react";
-import { lazy, Suspense } from "react";
+import { useEffect, useState} from "react";
+import { lazy} from "react";
 
 const MovieDetailsPage = lazy(() => {
   return import("../MoviesPage");
 });
-
 const MoviesPage = () => {
   const [name, setName] = useState("");
-  const [id, setId] = useState("");
+  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [trend, setTrend] = useState([]);
-  useEffect(() => {
-    API.fetchDataSearch(id).then(setTrend);
-    // console.log(trend);
-  }, [id]);
 
-  const test = (e) => {
+  const searchName = searchParams.get("query");
+
+  useEffect(() => {
+    if (search !== "") {
+      API.fetchDataSearch(search).then(setTrend);
+      return
+    }
+    if(searchName){
+      API.fetchDataSearch(searchName).then(setTrend);
+      return
+    }
+  }, [search]);
+
+  const searchHandle = (e) => {
     e.preventDefault();
-    setId(name);
+    setSearch(name);
+    setSearchParams({ query: name });
     setName("");
   };
 
   return (
     <>
-      <form onSubmit={test}>
+      <form onSubmit={searchHandle}>
         <label>
           <input
             type="text"
@@ -42,8 +52,9 @@ const MoviesPage = () => {
         <ul>
           {trend.map((item) => (
             <li key={item.id} data-id={item.id}>
-              {/* <MovieDetailsPage/> */}
-            <NavLink to={`/movies/${item.id}/`}>{item.title ? item.title : item.name}</NavLink>
+              <NavLink to={`/movies/${item.id}/`}>
+                {item.title ? item.title : item.name}
+              </NavLink>
             </li>
           ))}
         </ul>
