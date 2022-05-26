@@ -3,6 +3,13 @@
     grid-column-gap: 20px;
 }
 
+.imgWrapper{
+    margin: 0 0 20px 10px;
+    display: flex;
+    grid-column-gap: 10px;
+    align-items: center;
+}
+
 .inner{
     display: flex;
     flex-direction: column;
