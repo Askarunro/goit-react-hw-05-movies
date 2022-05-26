@@ -1,12 +1,14 @@
 import { useParams } from "react-router";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, Link, useNavigate  } from "react-router-dom";
 import * as API from "..//..//services/movies-api";
 import { useEffect, useState } from "react";
 import d from "./MovieDetailsPage.module.css";
+import backImg from "./back.png";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
-
+  let navigate = useNavigate();
+console.log(navigate)
   const [genres, setGenres] = useState([]);
   const [movie, setMovies] = useState([]);
   const [movieGenres, setMovieGenres] = useState([]);
@@ -28,14 +30,30 @@ const MovieDetailsPage = () => {
     setMovieGenres(a);
   }, [movie]);
 
+  console.log(navigate)
+
+
+  function handleClick() {
+    navigate(-1)
+  }
+
   return (
     <>
       {!movie && <h2>Loading</h2>}
       {movie && (
         <>
+          <button className={d.imgWrapper} onClick={handleClick}>
+            <img src={backImg} alt={`go back`} width={30} />
+              <p>Go back</p>
+          </button>
           <div className={d.wrapper}>
             <img
-              src={movie.title && `https://image.tmdb.org/t/p/w200/${movie.poster_path || movie.backdrop_path}`}
+              src={
+                movie.title &&
+                `https://image.tmdb.org/t/p/w200/${
+                  movie.poster_path || movie.backdrop_path
+                }`
+              }
             />
             <div className={d.inner}>
               <h1>{movie.title ? movie.title : movie.name}</h1>
